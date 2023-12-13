@@ -23,6 +23,9 @@ public class MalcheckService {
     @Value("${uploaded-file-dir}")
     private String uploadDir;
 
+    @Value("${rules-file-dir}")
+    private String rulesDir;
+
     public Map<String, String> malwareCheckWithDefinedRules(MultipartFile file) throws UploadFailedException, CLIOutputReadingException {
         Map<String, String> response = new HashMap<>();
 
@@ -47,9 +50,7 @@ public class MalcheckService {
         }
 
         ProcessBuilder processBuilder = new ProcessBuilder(
-            "cmd.exe", 
-            "/c", 
-            "yara -w .\\src\\main\\resources\\rules\\index.yar " + uploadDir + "\\" + fileName 
+            "yara", "-w", rulesDir + "\\index.yar", uploadDir + File.separator + fileName 
         );
 
         try {
